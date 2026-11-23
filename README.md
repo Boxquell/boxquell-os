@@ -1,6 +1,6 @@
 # boxquell-os
 
-Operating systems for [Boxquell](https://github.com/ToBee94/boxquell) sandboxes. Boxquell adds this repository by itself on first use.
+Operating systems for [Boxquell](https://github.com/Boxquell/boxquell) sandboxes. Boxquell adds this repository by itself on first use.
 
 ```sh
 boxquell os ls                    # what can be built, and what is built
