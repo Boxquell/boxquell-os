@@ -1,0 +1,34 @@
+name: Validate OS definitions
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Check every definition
+        run: |
+          python3 - <<'PY'
+          import pathlib, re, sys, tomllib
+          failed = False
+          for path in sorted(pathlib.Path("os").glob("*.toml")):
+              problems = []
+              if not re.fullmatch(r"[a-z0-9-]+", path.stem):
+                  problems.append("file name must use a-z, 0-9 and '-'")
+              try:
+                  definition = tomllib.loads(path.read_text())
+              except tomllib.TOMLDecodeError as err:
+                  definition, problems = {}, problems + [f"invalid TOML: {err}"]
+              for key in ("name", "description", "family", "image", "setup"):
+                  if not isinstance(definition.get(key), str) or not definition[key].strip():
+                      problems.append(f"missing or empty: {key}")
+              print(("FAIL " if problems else "ok   ") + str(path))
+              for problem in problems:
+                  print("     " + problem)
+              failed = failed or bool(problems)
+          sys.exit(1 if failed else 0)
+          PY

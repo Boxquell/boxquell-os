@@ -1,0 +1,12 @@
+name = "Ubuntu 24.04"
+description = "Ubuntu LTS. Most Debian recipes work; libkrun backend only."
+family = "debian"
+image = "ubuntu:24.04"
+setup = '''
+apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  ca-certificates curl git iproute2 iputils-ping less openssh-server e2fsprogs procps sudo util-linux
+# The image ships a user with the id the sandbox user needs.
+userdel -r ubuntu 2>/dev/null || true
+rm -rf /var/lib/apt/lists/*
+'''

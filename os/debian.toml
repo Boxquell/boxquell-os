@@ -1,0 +1,14 @@
+name = "Debian 13"
+description = "Debian stable. The default; every official recipe is written for it."
+family = "debian"
+image = "debian:stable-slim"
+# Brings its own kernel, so it also runs on the qemu backend.
+setup = '''
+apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  ca-certificates curl git iproute2 iputils-ping less openssh-server e2fsprogs procps sudo util-linux \
+  initramfs-tools zstd
+printf '%s\n' virtio_mmio virtio_pci virtio_blk virtio_net virtio_console ext4 virtiofs 9p 9pnet_virtio >> /etc/initramfs-tools/modules
+DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends linux-image-cloud-amd64
+rm -rf /var/lib/apt/lists/*
+'''
