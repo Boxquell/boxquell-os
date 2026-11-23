@@ -1,4 +1,6 @@
 name = "Debian 13"
+group = "debian"
+version = "13"
 description = "Debian stable. The default; every official recipe is written for it."
 icon = "debian.svg"
 icon_color = "#A81D33"

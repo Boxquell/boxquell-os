@@ -13,17 +13,26 @@ The [releases](https://github.com/Boxquell/boxquell-os/releases) of this reposit
 | Id | System | Recipes that fit | Backends |
 |---|---|---|---|
 | `debian` | Debian 13 (default) | all official recipes | krun, qemu |
+| `debian-12` | Debian 12 | all official recipes | krun, qemu |
 | `ubuntu` | Ubuntu 24.04 | agents, Node.js, Python, Go, Rust and most tools | krun |
+| `ubuntu-22-04` | Ubuntu 22.04 | agents, Node.js, Python, Go, Rust and most tools | krun |
+| `ubuntu-26-04` | Ubuntu 26.04 LTS | agents, Node.js, Python, Go, Rust and most tools | krun |
 | `alpine` | Alpine 3 | none yet | krun |
 | `arch` | Arch Linux (x86_64 only) | none yet | krun |
 | `alma` | AlmaLinux 9 | none yet | krun |
+| `alma-10` | AlmaLinux 10 | none yet | krun |
+| `alma-8` | AlmaLinux 8 | none yet | krun |
+
+Every version of a system is its own definition with its own id. Definitions that share a `group` are shown as one system with a version chooser.
 
 ## How a definition works
 
-One TOML file per system in `os/`. The file name is its id.
+One TOML file per system in `os/`. The file name is its id (lowercase letters, digits and `-`). The file without a version suffix is the default of its group; the other versions follow by descending `version`.
 
 ```toml
 name = "Ubuntu 24.04"
+group = "ubuntu"                  # definitions with the same group are versions of one system
+version = "24.04"                 # the label in the version chooser
 description = "Ubuntu LTS."
 icon = "ubuntu.svg"               # optional, a single-colour SVG in the icons/ directory
 family = "ubuntu"                 # recipes say which families they support; default is debian

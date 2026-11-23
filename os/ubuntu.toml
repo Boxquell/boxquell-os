@@ -1,4 +1,6 @@
 name = "Ubuntu 24.04"
+group = "ubuntu"
+version = "24.04"
 description = "Ubuntu LTS. Agents, Node.js, Python, Go, Rust and most tools work; libkrun backend only."
 icon = "ubuntu.svg"
 icon_color = "#E95420"

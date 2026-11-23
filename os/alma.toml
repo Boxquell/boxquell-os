@@ -1,4 +1,6 @@
 name = "AlmaLinux 9"
+group = "alma"
+version = "9"
 description = "Free rebuild of Red Hat Enterprise Linux (RPM, dnf). libkrun backend only."
 icon = "almalinux.svg"
 icon_color = "#000000"

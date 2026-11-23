@@ -1,4 +1,6 @@
 name = "Arch Linux"
+group = "arch"
+version = "rolling"
 description = "Rolling release, always the newest packages. x86_64 only (Arch has no official ARM64 image); libkrun backend only."
 icon = "archlinux.svg"
 icon_color = "#1793D1"

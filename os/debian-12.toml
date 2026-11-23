@@ -1,0 +1,19 @@
+name = "Debian 12"
+group = "debian"
+version = "12"
+description = "Debian oldstable (bookworm). Brings its own kernel, so it also runs on the qemu backend."
+icon = "debian.svg"
+icon_color = "#A81D33"
+family = "debian"
+package_hosts = ["deb.debian.org", "security.debian.org"]
+image = "debian:12-slim"
+# Brings its own kernel, so it also runs on the qemu backend.
+setup = '''
+apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  ca-certificates curl git iproute2 iputils-ping less openssh-server e2fsprogs procps sudo util-linux \
+  initramfs-tools zstd
+printf '%s\n' virtio_mmio virtio_pci virtio_blk virtio_net virtio_console ext4 virtiofs 9p 9pnet_virtio >> /etc/initramfs-tools/modules
+DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends "linux-image-cloud-$(dpkg --print-architecture)"
+rm -rf /var/lib/apt/lists/*
+'''
