@@ -1,6 +1,7 @@
 name = "Alpine 3"
 description = "Small and quick to build. No official recipes yet; libkrun backend only."
 icon = "alpinelinux.svg"
+icon_color = "#0D597F"
 family = "alpine"
 package_hosts = ["dl-cdn.alpinelinux.org"]
 image = "alpine:3"

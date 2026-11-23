@@ -1,6 +1,7 @@
 name = "Ubuntu 24.04"
 description = "Ubuntu LTS. Agents, Node.js, Python, Go, Rust and most tools work; libkrun backend only."
 icon = "ubuntu.svg"
+icon_color = "#E95420"
 family = "ubuntu"
 package_hosts = ["archive.ubuntu.com", "security.ubuntu.com"]
 image = "ubuntu:24.04"

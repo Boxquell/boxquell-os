@@ -1,6 +1,7 @@
 name = "Debian 13"
 description = "Debian stable. The default; every official recipe is written for it."
 icon = "debian.svg"
+icon_color = "#A81D33"
 family = "debian"
 package_hosts = ["deb.debian.org", "security.debian.org"]
 image = "debian:stable-slim"
