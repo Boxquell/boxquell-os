@@ -1,5 +1,6 @@
 name = "Arch Linux"
 description = "Rolling release, always the newest packages. x86_64 only (Arch has no official ARM64 image); libkrun backend only."
+icon = "archlinux.svg"
 family = "arch"
 package_hosts = ["geo.mirror.pkgbuild.com"]
 # The official image exists for x86_64 only, so the ARM64 build skips this system.

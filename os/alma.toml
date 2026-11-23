@@ -1,5 +1,6 @@
 name = "AlmaLinux 9"
 description = "Free rebuild of Red Hat Enterprise Linux (RPM, dnf). libkrun backend only."
+icon = "almalinux.svg"
 family = "rpm"
 package_hosts = ["repo.almalinux.org"]
 image = "almalinux:9"

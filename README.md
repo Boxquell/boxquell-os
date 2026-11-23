@@ -25,6 +25,7 @@ One TOML file per system in `os/`. The file name is its id.
 ```toml
 name = "Ubuntu 24.04"
 description = "Ubuntu LTS."
+icon = "ubuntu.svg"               # optional, a single-colour SVG in the icons/ directory
 family = "ubuntu"                 # recipes say which families they support; default is debian
 package_hosts = ["archive.ubuntu.com", "security.ubuntu.com"]   # what recipes get for `@packages`
 image = "ubuntu:24.04"            # the container image the system is built from
@@ -39,6 +40,8 @@ apt-get update && apt-get install -y --no-install-recommends ...
 Boxquell then adds the user `dev` with passwordless sudo, the ssh settings and its own start scripts, and packs the result into a disk image. A system that installs a kernel and an initrd under `/boot` (as Debian does here) also runs on the qemu backend; the others use the kernel libkrun brings.
 
 Anyone can publish more systems: put an `os/` directory into a repository and add it with `boxquell repo add <url>`. A definition is a script that runs with full rights inside the build container and decides what every sandbox of that system contains, so add only repositories you trust.
+
+Icons in `icons/` come from [Simple Icons](https://simpleicons.org) (CC0). The logos remain trademarks of their owners.
 
 ## License
 
