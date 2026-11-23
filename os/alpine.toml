@@ -1,6 +1,7 @@
 name = "Alpine 3"
 description = "Small and quick to build. No official recipes yet; libkrun backend only."
 family = "alpine"
+package_hosts = ["dl-cdn.alpinelinux.org"]
 image = "alpine:3"
 setup = '''
 apk add --no-cache bash ca-certificates curl git iproute2 less openssh-server e2fsprogs e2fsprogs-extra procps sudo shadow util-linux runuser coreutils tar

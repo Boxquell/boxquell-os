@@ -1,6 +1,7 @@
 name = "Ubuntu 24.04"
-description = "Ubuntu LTS. Most Debian recipes work; libkrun backend only."
-family = "debian"
+description = "Ubuntu LTS. Agents, Node.js, Python, Go, Rust and most tools work; libkrun backend only."
+family = "ubuntu"
+package_hosts = ["archive.ubuntu.com", "security.ubuntu.com"]
 image = "ubuntu:24.04"
 setup = '''
 apt-get update

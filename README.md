@@ -11,7 +11,7 @@ boxquell new mybox --os ubuntu
 | Id | System | Recipes that fit | Backends |
 |---|---|---|---|
 | `debian` | Debian 13 (default) | all official recipes | krun, qemu |
-| `ubuntu` | Ubuntu 24.04 | most Debian recipes | krun |
+| `ubuntu` | Ubuntu 24.04 | agents, Node.js, Python, Go, Rust and most tools | krun |
 | `alpine` | Alpine 3 | none yet | krun |
 
 ## How a definition works
@@ -21,7 +21,8 @@ One TOML file per system in `os/`. The file name is its id.
 ```toml
 name = "Ubuntu 24.04"
 description = "Ubuntu LTS."
-family = "debian"                 # recipes say which families they support; default is debian
+family = "ubuntu"                 # recipes say which families they support; default is debian
+package_hosts = ["archive.ubuntu.com", "security.ubuntu.com"]   # what recipes get for `@packages`
 image = "ubuntu:24.04"            # the container image the system is built from
 setup = '''
 # Runs as root while the image is built. Install what every sandbox needs:

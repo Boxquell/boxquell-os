@@ -1,6 +1,7 @@
 name = "Debian 13"
 description = "Debian stable. The default; every official recipe is written for it."
 family = "debian"
+package_hosts = ["deb.debian.org", "security.debian.org"]
 image = "debian:stable-slim"
 # Brings its own kernel, so it also runs on the qemu backend.
 setup = '''
