@@ -64,6 +64,8 @@ jobs:
           touch "$BOXQUELL_HOME/repos/.official-added-2"
           for file in os/*.toml; do
             id=$(basename "$file" .toml)
+            # Arch Linux publishes no ARM64 container image.
+            if [ "$ARCH" = aarch64 ] && [ "$id" = arch ]; then continue; fi
             echo "::group::$id"
             boxquell/target/release/boxquell os build "$id"
             files="$id.img $id.json"
