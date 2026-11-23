@@ -1,0 +1,10 @@
+name = "Arch Linux"
+description = "Rolling release, always the newest packages. x86_64 only (Arch has no official ARM64 image); libkrun backend only."
+family = "arch"
+package_hosts = ["geo.mirror.pkgbuild.com"]
+# The official image exists for x86_64 only, so the ARM64 build skips this system.
+image = "archlinux:latest"
+setup = '''
+pacman -Syu --noconfirm --needed bash ca-certificates curl git iproute2 iputils less openssh e2fsprogs procps-ng sudo util-linux shadow tar coreutils inetutils which
+rm -rf /var/cache/pacman/pkg/*
+'''

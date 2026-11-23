@@ -8,13 +8,15 @@ boxquell new mybox --os ubuntu    # downloads the system on first use
 boxquell os build ubuntu          # or build it yourself (needs Docker)
 ```
 
-The [releases](https://github.com/Boxquell/boxquell-os/releases) of this repository hold ready-made disk images of every system, for x86_64 and ARM64, built by the `Images` workflow whenever a definition changes. Boxquell downloads from the latest one and checks the file against its `SHA256SUMS`.
+The [releases](https://github.com/Boxquell/boxquell-os/releases) of this repository hold ready-made disk images of every system, for x86_64 and ARM64 (Arch Linux has no official ARM64 image, so it is x86_64 only), built by the `Images` workflow whenever a definition changes. Boxquell downloads from the latest one and checks the file against its `SHA256SUMS`.
 
 | Id | System | Recipes that fit | Backends |
 |---|---|---|---|
 | `debian` | Debian 13 (default) | all official recipes | krun, qemu |
 | `ubuntu` | Ubuntu 24.04 | agents, Node.js, Python, Go, Rust and most tools | krun |
 | `alpine` | Alpine 3 | none yet | krun |
+| `arch` | Arch Linux (x86_64 only) | none yet | krun |
+| `alma` | AlmaLinux 9 | none yet | krun |
 
 ## How a definition works
 

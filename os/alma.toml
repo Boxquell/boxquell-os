@@ -1,0 +1,16 @@
+name = "AlmaLinux 9"
+description = "Free rebuild of Red Hat Enterprise Linux (RPM, dnf). libkrun backend only."
+family = "rpm"
+package_hosts = ["repo.almalinux.org"]
+image = "almalinux:9"
+setup = '''
+# Use the main mirror instead of the mirror list, so the sandbox needs one known host for packages.
+sed -i -e 's/^mirrorlist=/#mirrorlist=/' -e 's|^# *baseurl=|baseurl=|' /etc/yum.repos.d/almalinux*.repo
+# curl-minimal, already in the image, provides curl.
+dnf install -y --setopt=install_weak_deps=False bash ca-certificates curl-minimal git-core iproute iputils less openssh-server e2fsprogs procps-ng sudo util-linux shadow-utils tar hostname which
+dnf clean all
+# boxquell adds its sandbox CA to /etc/ssl/certs/ca-certificates.crt; make every tool read that file.
+cp -L /etc/pki/tls/certs/ca-bundle.crt /etc/pki/tls/certs/ca-certificates.crt
+ln -sf ca-certificates.crt /etc/pki/tls/certs/ca-bundle.crt
+ln -sf certs/ca-certificates.crt /etc/pki/tls/cert.pem
+'''
