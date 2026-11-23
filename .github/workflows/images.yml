@@ -1,0 +1,107 @@
+name: Images
+
+# Builds every system in os/ into a disk image, for x86_64 and for ARM64, and
+# publishes them as a release. `boxquell os install <id>` downloads from the
+# latest one, so nobody needs Docker to get a system.
+
+on:
+  push:
+    branches: [main]
+    paths: ["os/**", ".github/workflows/images.yml"]
+  workflow_dispatch:
+    inputs:
+      boxquell_ref:
+        description: Branch or tag of Boxquell/boxquell that builds the images
+        default: main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: images
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: ${{ matrix.arch }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { arch: x86_64, platform: linux/amd64 }
+          - { arch: aarch64, platform: linux/arm64 }
+    steps:
+      - uses: actions/checkout@v7
+      # The images are built by boxquell itself, the same way a user would build one.
+      - uses: actions/checkout@v7
+        with:
+          repository: Boxquell/boxquell
+          ref: ${{ inputs.boxquell_ref || 'main' }}
+          path: boxquell
+      - uses: dtolnay/rust-toolchain@39008827e6b4319a349e9a42dfc90579dd25f1ca # stable
+        with:
+          toolchain: stable
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2
+        with:
+          workspaces: boxquell
+      - name: Build boxquell
+        working-directory: boxquell
+        run: cargo build --release -p boxquell
+      # ARM64 images are put together under emulation.
+      - uses: docker/setup-qemu-action@v3
+        if: matrix.arch != 'x86_64'
+      - name: Build the images
+        env:
+          DOCKER_DEFAULT_PLATFORM: ${{ matrix.platform }}
+          BOXQUELL_HOME: ${{ github.workspace }}/home
+          ARCH: ${{ matrix.arch }}
+        run: |
+          mkdir -p "$BOXQUELL_HOME/repos/os" dist
+          # Use the definitions of this commit, not the published ones.
+          cp -r os "$BOXQUELL_HOME/repos/os/os"
+          git -C "$BOXQUELL_HOME/repos/os" init -q
+          touch "$BOXQUELL_HOME/repos/.official-added-2"
+          for file in os/*.toml; do
+            id=$(basename "$file" .toml)
+            echo "::group::$id"
+            boxquell/target/release/boxquell os build "$id"
+            files="$id.img $id.json"
+            for extra in vmlinuz initrd; do [ -f "$BOXQUELL_HOME/images/$id.$extra" ] && files="$files $id.$extra"; done
+            tar -czf "dist/boxquell-os-$id-$ARCH.tar.gz" -C "$BOXQUELL_HOME/images" $files
+            rm -f "$BOXQUELL_HOME/images/$id".*
+            echo "::endgroup::"
+          done
+          ls -l dist
+      - uses: actions/upload-artifact@v7
+        with:
+          name: images-${{ matrix.arch }}
+          path: dist/*.tar.gz
+          if-no-files-found: error
+
+  release:
+    name: Publish
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Checksums
+        run: cd dist && sha256sum boxquell-os-* > SHA256SUMS && cat SHA256SUMS
+      - uses: actions/attest-build-provenance@v4
+        with:
+          subject-path: dist/SHA256SUMS
+      - name: Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="images-$(date -u +%Y.%m.%d)-${GITHUB_RUN_NUMBER}"
+          gh release create "$tag" dist/* --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --latest \
+            --title "System images $(date -u +%Y-%m-%d)" \
+            --notes "Disk images of the systems in \`os/\` at ${GITHUB_SHA::7}, for x86_64 and ARM64. \`boxquell os install <id>\` downloads from the latest release and checks the file against \`SHA256SUMS\`."

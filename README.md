@@ -3,10 +3,12 @@
 Operating systems for [Boxquell](https://github.com/Boxquell/boxquell) sandboxes. Boxquell adds this repository by itself on first use.
 
 ```sh
-boxquell os ls                    # what can be built, and what is built
-boxquell os build ubuntu          # builds the image once (needs Docker and e2fsprogs)
-boxquell new mybox --os ubuntu
+boxquell os ls                    # what there is, and what is on this computer
+boxquell new mybox --os ubuntu    # downloads the system on first use
+boxquell os build ubuntu          # or build it yourself (needs Docker)
 ```
+
+The [releases](https://github.com/Boxquell/boxquell-os/releases) of this repository hold ready-made disk images of every system, for x86_64 and ARM64, built by the `Images` workflow whenever a definition changes. Boxquell downloads from the latest one and checks the file against its `SHA256SUMS`.
 
 | Id | System | Recipes that fit | Backends |
 |---|---|---|---|
