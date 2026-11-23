@@ -14,6 +14,6 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
   ca-certificates curl git iproute2 iputils-ping less openssh-server e2fsprogs procps sudo util-linux \
   initramfs-tools zstd
 printf '%s\n' virtio_mmio virtio_pci virtio_blk virtio_net virtio_console ext4 virtiofs 9p 9pnet_virtio >> /etc/initramfs-tools/modules
-DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends "linux-image-cloud-$(dpkg --print-architecture)"
+DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends "linux-image-$(dpkg --print-architecture)"
 rm -rf /var/lib/apt/lists/*
 '''
